@@ -1,6 +1,6 @@
 import {
   createTaskSchema,
-  updateTasskSchema,
+  updateTaskSchema,
   getSingleTaskSchema,
   deleteTaskSchema,
 } from "../../../schema/todo";
@@ -8,31 +8,33 @@ import { t, authedProcedure } from "../trpc";
 
 export const todoRouter = t.router({
   // authedProcedure. にすることで認証が通っている場合のみの処理が書ける
-  createTask: authedProcedure.input(createTaskSchema).mutation(async ({ctx, input}) => {
-    const task = await ctx.prisma.task.create({
-      data; {
-        ...input,
-        user: {
-          connect: {
-            // ログインしているユーザーのIDに一致するレコードを検索してくる
-            id: ctx.session?.user?.id,
-          }
-        }
-      }
-    })
-    return task
-  }),
+  createTask: authedProcedure
+    .input(createTaskSchema)
+    .mutation(async ({ ctx, input }) => {
+      const task = await ctx.prisma.task.create({
+        data: {
+          ...input,
+          user: {
+            connect: {
+              // ログインしているユーザーのIDに一致するレコードを検索してくる
+              id: ctx.session?.user?.id,
+            },
+          },
+        },
+      });
+      return task;
+    }),
   // authedProcedure ではなく、t.procedure を使用することで、認証してなくても処理が通る関数ができる
-  getTasks: t.procedure.query(({ctx}) => {
+  getTasks: t.procedure.query(({ ctx }) => {
     return ctx.prisma.task.findMany({
       where: {
         // ログインしているユーザーの一覧のみを取得
-        userId: ctx.session?.user?.id
+        userId: ctx.session?.user?.id,
       },
       orderBy: {
-        createdAt: 'dexc',
-      }
-    })
+        createdAt: "desc",
+      },
+    });
   }),
   getSingleTask: authedProcedure
     .input(getSingleTaskSchema)
@@ -40,11 +42,11 @@ export const todoRouter = t.router({
       return ctx.prisma.task.findUnique({
         where: {
           id: input.taskId,
-        }
-      })
+        },
+      });
     }),
-  updateTassk: authedProcedure
-    .input(updateTasskSchema)
+  updateTask: authedProcedure
+    .input(updateTaskSchema)
     .mutation(async ({ ctx, input }) => {
       const task = await ctx.prisma.task.update({
         where: {
@@ -54,8 +56,8 @@ export const todoRouter = t.router({
           title: input.title,
           body: input.body,
         },
-      })
-      return task
+      });
+      return task;
     }),
   deleteTask: authedProcedure
     .input(deleteTaskSchema)
@@ -63,7 +65,7 @@ export const todoRouter = t.router({
       await ctx.prisma.task.delete({
         where: {
           id: input.taskId,
-        }
-      })
+        },
+      });
     }),
 });

@@ -12,7 +12,7 @@ export const useMutateTask = () => {
       const previousTodos = utils.todo.getTasks.getData(); // ReactQueryから既存のタスク（キャッシュ）を取得
       if (previousTodos) {
         // キャッシュを更新
-        utils.todo.getTasks.setTasks.setData([res, ...previousTodos]);
+        utils.todo.getTasks.setData([res, ...previousTodos]);
       }
       reset(); // Zustandのステートをリセット
     },
@@ -30,7 +30,7 @@ export const useMutateTask = () => {
     },
   });
 
-  const deleateTaskMutation = trpc.todo.deleteTask.useMutation({
+  const deleteTaskMutation = trpc.todo.deleteTask.useMutation({
     // 第一引数 => deleteTaskの返り値
     // 第二引数（variables） => deleteTaskに渡された引数の値
     onSuccess: (_, variables) => {
@@ -44,5 +44,5 @@ export const useMutateTask = () => {
     },
   });
 
-  return { createTaskMutation, updateTaskMutation, deleateTaskMutation };
+  return { createTaskMutation, updateTaskMutation, deleteTaskMutation };
 };
