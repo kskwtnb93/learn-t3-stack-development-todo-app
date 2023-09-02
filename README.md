@@ -1,12 +1,35 @@
-# .env
+# 概要
 
-## DATABASE_URL
+個人的な学習記録用のリポジトリです。  
+以下の構成で ToDo アプリを作成して、T3 Stack を学びました。
+
+- Next.js
+  - API Route を利用してバックエンドを実装
+- tRPC
+- Tailwind CSS
+- TypeScript
+- Prisma
+- NextAuth.js
+
+また、ローカル環境では Docker を用いて Postgres DB の環境を構築してます。
+
+# MEMO
+
+## Prisma
+
+```
+npx prisma studio
+```
+
+## .env
+
+### DATABASE_URL
 
 ```
 DATABASE_URL=postgresql://udemy:udemy@localhost:5434/udemy?schema=public
 ```
 
-## NEXTAUTH_SECRET
+### NEXTAUTH_SECRET
 
 `openssl rand -base64 32` で生成したトークンを入力
 
@@ -14,7 +37,7 @@ DATABASE_URL=postgresql://udemy:udemy@localhost:5434/udemy?schema=public
 NEXTAUTH_SECRET={ここに入力}
 ```
 
-## NEXTAUTH_URL
+### NEXTAUTH_URL
 
 ```
 NEXTAUTH_URL=http://localhost:3000
