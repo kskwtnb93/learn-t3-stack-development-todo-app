@@ -1,4 +1,4 @@
-import React from "react";
+import { FC, ReactNode } from "react";
 import Head from "next/head";
 
 type Props = {
